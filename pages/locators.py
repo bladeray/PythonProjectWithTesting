@@ -13,3 +13,11 @@ class LoginPageLocators:
     REGISTRATION_PASSWORD = (By.NAME, "registration-password1")
     REGISTRATION_PASSWORD_REPEAT = (By.NAME, "registration-password2")
     REGISTRATION_BUTTON = (By.NAME, "registration_submit")
+
+
+class ProductPageLocators:
+    ADD_BUTTON = (By.CSS_SELECTOR, ".btn-add-to-basket")
+    PRODUCT_NAME = (By.CSS_SELECTOR, ".product_main h1")
+    PRODUCT_PRICE = (By.CSS_SELECTOR, ".product_main .price_color")
+    SUCCESS_MESSAGES = (By.CSS_SELECTOR, "#messages .alert-success")
+    INFO_MESSAGES = (By.CSS_SELECTOR, "#messages .alert-info")
