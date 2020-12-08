@@ -8,9 +8,8 @@ class ProductPage(BasePage):
         add_button.click()
 
     def should_be_success_add_message(self):
-        assert self.browser.find_elements(*ProductPageLocators.SUCCESS_MESSAGES)[0].text.find("has been added to your basket.") != -1, "Success message is not found"
-        product_name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
-        assert self.browser.find_elements(*ProductPageLocators.SUCCESS_MESSAGES)[0].text.find(product_name) != -1, "Product name is not found in success message"
+        correct_message = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text + " has been added to your basket."
+        assert self.browser.find_elements(*ProductPageLocators.SUCCESS_MESSAGES)[0].text.find(correct_message) != -1, "Success add message is not found or incorrect"
 
     def should_be_success_basket_message(self):
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
