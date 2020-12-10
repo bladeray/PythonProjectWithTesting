@@ -1,7 +1,7 @@
 import pytest
 
 from pages.basket_page import BasketPage
-from pages.login_page import LoginPage
+from pages.login_page import LoginPage, generate_email
 from pages.product_page import ProductPage
 
 products = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
@@ -14,6 +14,29 @@ products = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/
             # "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
             # "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
             "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"]
+
+
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        page = LoginPage(browser, "http://selenium1py.pythonanywhere.com/ru/accounts/login/")
+        page.open()
+        email = generate_email()
+        page.register_new_user(email, "py5nn95k1")
+        page.should_be_authorized_user()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0")
+        page.open()
+        page.click_add_to_basket_button()
+        page.solve_quiz_and_get_code()
+        page.should_be_success_add_message()
+        page.should_be_success_basket_message()
+
+    def test_user_cant_see_success_message(self, browser):
+        page = ProductPage(browser, "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0")
+        page.open()
+        page.should_not_be_success_add_message()
 
 
 @pytest.mark.parametrize('product', products)

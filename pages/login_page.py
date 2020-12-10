@@ -1,5 +1,13 @@
+import faker
+
 from .base_page import BasePage
 from .locators import LoginPageLocators
+
+
+def generate_email():
+    f = faker.Faker()
+    email = f.email()
+    return email
 
 
 class LoginPage(BasePage):
@@ -17,7 +25,16 @@ class LoginPage(BasePage):
         assert self.is_element_present(*LoginPageLocators.LOGIN_BUTTON), "Login button is not presented"
 
     def should_be_register_form(self):
-        assert self.is_element_present(*LoginPageLocators.REGISTRATION_EMAIL), "Registration email field is not presented"
-        assert self.is_element_present(*LoginPageLocators.REGISTRATION_PASSWORD), "Registration password field is not presented"
-        assert self.is_element_present(*LoginPageLocators.REGISTRATION_PASSWORD_REPEAT), "Registration password repeat field is not presented"
+        assert self.is_element_present(
+            *LoginPageLocators.REGISTRATION_EMAIL), "Registration email field is not presented"
+        assert self.is_element_present(
+            *LoginPageLocators.REGISTRATION_PASSWORD), "Registration password field is not presented"
+        assert self.is_element_present(
+            *LoginPageLocators.REGISTRATION_PASSWORD_REPEAT), "Registration password repeat field is not presented"
         assert self.is_element_present(*LoginPageLocators.REGISTRATION_BUTTON), "Registration button is not presented"
+
+    def register_new_user(self, email, password):
+        self.browser.find_element(*LoginPageLocators.REGISTRATION_EMAIL).send_keys(email)
+        self.browser.find_element(*LoginPageLocators.REGISTRATION_PASSWORD).send_keys(password)
+        self.browser.find_element(*LoginPageLocators.REGISTRATION_PASSWORD_REPEAT).send_keys(password)
+        self.browser.find_element(*LoginPageLocators.REGISTRATION_BUTTON).click()
