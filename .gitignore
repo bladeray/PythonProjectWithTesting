@@ -19,5 +19,3 @@
 logs.json
 /.idea/
 .DS_Store
-/allure-report/
-/allure-results/
