@@ -1,0 +1,57 @@
+include:
+  - local: vars.yml
+
+stages:
+  - check
+  - dep
+  - build
+  - test
+
+linters:
+    stage: check
+    image: python
+    before_script:
+      - pip install flake8
+    script:
+      - flake8 framework/tests --output-file "flake8-report.txt"
+    artifacts:
+        when: on_failure
+        expire_in: 1 week
+        paths:
+            - flake8-report.txt
+
+.build_template:
+    stage: build
+    before_script:
+      - echo 'run hidden job'
+
+hidden_jobs:
+    extends: .build_template
+    script:
+      - echo 'run from main job'
+
+.run-tests:
+    stage: test
+    image: python
+    before_script:
+      - echo 'here hidden run-jobs'
+
+auto_tests:
+    extends: .run-tests
+    when: always
+    script:
+      - echo 'autotests here'
+
+manual_tests:
+    extends: .run-tests
+    when: manual
+    script:
+      - echo 'manual_tests here'
+
+load_tests:
+    extends: .run-tests
+    when: on_success
+    script:
+      - echo 'load_tests here'
+    only:
+      - ci
